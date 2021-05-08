@@ -4,7 +4,6 @@ const Ninja = require('../models/ninja');
 
 const bodyParser = require('body-parser');
 
-const { json } = require('body-parser');
 let jsonParser = bodyParser.json();
 
 let urlencodedParser = bodyParser.urlencoded({extended:false});
