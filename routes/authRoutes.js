@@ -14,3 +14,5 @@ router.post('/register', clientChecker, authControlller.register);
 router.post('/login', jsonParser, (res, req, next) => {
 
 });
+
+module.exports = router;

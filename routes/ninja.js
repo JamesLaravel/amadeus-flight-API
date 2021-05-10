@@ -10,6 +10,8 @@ let urlencodedParser = bodyParser.urlencoded({extended:false});
 
 const token = require('./../middlewares/checkHeader');
 
+const AmadeusController = require('../Controllers/AmadeusController')
+
 
 //get a list of ninjs from the db
 router.get('/ninjas', urlencodedParser,token, function(req,res, next){
@@ -50,5 +52,9 @@ router.delete('/ninjas/:_id', jsonParser, function(req, res, next) {
                 res.send(ninja)
             }).catch(next);
 });
+
+router.get('/new', jsonParser, AmadeusController.getflightOffers)
+
+//router.get('flightOffer', urlencodedParser, AmadeusController.getflightOffers);
 
 module.exports = router;
