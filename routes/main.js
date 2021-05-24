@@ -3,6 +3,7 @@ const ninja = require('./ninja');
 const users = require('./user');
 const todo = require('./todo');
 const api = require('./api');
+const notes = require('./note');
 
 
 const useRouter = (app) => {
@@ -13,6 +14,7 @@ const useRouter = (app) => {
         users,
         todo,
         api,
+        notes,
     ];
 
     for(let i = 0; i < routeDefinitions.length; i += 1){

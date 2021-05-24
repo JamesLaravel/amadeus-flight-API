@@ -8,11 +8,13 @@ const { MONGODB } = require('./config');
 
 const routeDefinitions = require('./routes/main')
 
+const auth = require('./middlewares/auth');
+
 
 
 //set up express app
 const app = express()
-//app.use(express.json());    
+app.use(express.json());    
 
 if(dotenv.error){
     throw dotenv.error
@@ -23,16 +25,16 @@ if(dotenv.error){
 //check if db connection is correct then start serve
 
 mongoose.connect(MONGODB, {
-
     useNewUrlParser: true,
     useUnifiedTopology:true,
     useCreateIndex: true,
 }).then( () => {
-
     return app.listen(process.env.PORT);
 }).then( () => {
     console.log("Server started listening on port: 3000")
-}).catch(err => console.log(err.message));
+}).catch(
+    err => console.log(err.message)
+);
 
 mongoose.Promise = global.Promise;
 
@@ -46,16 +48,26 @@ mongoose.Promise = global.Promise;
 
 //set middleware
 
+app.use('/api/v1/protected', auth, (req, res)=> {
+    res.end(`Hi ${req.user.firstname}, you are authenticated!`);
+})
+
 routeDefinitions(app);
 
 //error handling middleware
 
-app.use((err, req, res, next) => {
-    if(err instanceof ExpressValidationError){
-        return res.status(400).send({
-            errors: err.toJSON()
-        })
-    }
-    res.status(422).send({error: err.message})
+app.use((req, res, next) => {
+    const err = new Error('not found');
+    err.status = 404;
+    next(err);
+})
 
+app.use((err, req, res, next) => {
+
+    const status = err.status || 500;
+
+    res.status(status).json({error: {
+        message: err.message
+    }})
+    
 })

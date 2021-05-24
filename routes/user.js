@@ -8,9 +8,9 @@ const authControlller = require('../Controllers/authController')
 
 const jsonParser = bodyParser.json()
 
-router.post('/register',jsonParser, clientChecker, authControlller.register);
+router.post('/register', authControlller.register);
 
-router.post('/login', jsonParser, clientChecker, authControlller.login);
+router.post('/login', authControlller.login);
 
 
 module.exports = router;
