@@ -87,10 +87,12 @@ exports.login = async (req, res, next)=> {
 
 getSignedToken = user => {
     return jwt.sign({
+       user: {
         id: user._id,
         email: user.email,
         firstname: user.firstname,
         lastname: user.lastname
+        }
     }, process.env.JWTSECRET_KEY, {
         expiresIn:process.env.JWT_EXP
     })

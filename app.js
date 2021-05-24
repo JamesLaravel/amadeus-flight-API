@@ -24,7 +24,7 @@ if(dotenv.error){
 //connection to monogodb
 //check if db connection is correct then start serve
 
-mongoose.connect(MONGODB, {
+mongoose.connect(process.env.MONGODB, {
     useNewUrlParser: true,
     useUnifiedTopology:true,
     useCreateIndex: true,
@@ -67,7 +67,11 @@ app.use((err, req, res, next) => {
     const status = err.status || 500;
 
     res.status(status).json({error: {
+        error: true,
+        statue:0,
         message: err.message
     }})
     
 })
+
+
