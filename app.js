@@ -10,12 +10,15 @@ const routeDefinitions = require('./routes/main')
 
 const auth = require('./middlewares/auth');
 
+const cors = require('cors');
+
+
 
 
 //set up express app
 const app = express()
 app.use(express.json());    
-
+app.use(cors());
 if(dotenv.error){
     throw dotenv.error
 }
@@ -52,7 +55,7 @@ app.use('/api/v1/protected', auth, (req, res)=> {
     res.end(`Hi ${req.user.firstname}, you are authenticated!`);
 })
 
-routeDefinitions(app);
+    routeDefinitions(app);
 
 //error handling middleware
 

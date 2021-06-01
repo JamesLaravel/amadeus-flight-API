@@ -14,16 +14,22 @@ module.exports = (req, res, next)=> {
                 const { user, exp } = jwt.verify(token, process.env.JWTSECRET_KEY) 
 
                 if(Date.now() >= exp * 1000){
-                    error.status = 401;
+                    error.status = 400;
                     error.message = 'Token time out. Login again'
                     return next(error);
                 }
-                
+
                 req.user = user;
 
                 return next();
             } catch (error) {
-                error.message = 'Invalid token';
+
+                if(error.message == "jwt expired"){
+                    error.message = 'Token time out. Login again'                    
+                }
+
+                error.status = 400;
+                return next(error);
             }
         }
 

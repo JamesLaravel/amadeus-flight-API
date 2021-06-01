@@ -1,4 +1,6 @@
 const  Amadeus = require('amadeus');
+const { TokenExpiredError } = require('jsonwebtoken');
+const client = require('../helpers/_redis');
 
 const amadeus = new Amadeus({
     clientId : process.env.AMADEUS_CLIENT_ID,
@@ -13,12 +15,17 @@ amadeus.shopping.flightOffersSearch.get({
         destinationLocationCode: 'BKK',
         departureDate: '2021-08-01',
         adults: '1',
-        child: '1'
     }).then(function(response){
-        
-    
-      return res.status(200).json({status: 'Success', data: response.data[0]})
+
+        const api_response = response.data.map(item => {
+            item.price = item.price.total * 100
+            return item;
+        })
+
+      return res.status(200).json({status: 'Success', data: api_response})
     }).catch(function(error){
+        console.log(error)
+        error.status = 400;
         //reject(new Error(error.body))
         next(error)
     });

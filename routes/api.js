@@ -1,14 +1,10 @@
 const router = require("express").Router()
+const { resolveInclude } = require("ejs");
+const redisController = require('../Controllers/redisController');
+const AmadeusController = require('../Controllers/AmadeusController');
+const cacheMiddleware = require('../middlewares/Redis_cache');
 
-const bodyParser = require('body-parser');
+router.get('/repos/:username',cacheMiddleware, redisController.getRepos);
 
-let jsonParser = bodyParser.json();
-
-
-let urlencodedParser = bodyParser.urlencoded({extended:false});
-
-const AmadeusController = require('../Controllers/AmadeusController')
-
-router.get('flightOffer', urlencodedParser, AmadeusController.getflightOffers);
-
+router.get('/flight/get-flight', AmadeusController.getflightOffers);
 module.exports = router;
