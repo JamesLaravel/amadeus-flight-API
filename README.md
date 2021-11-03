@@ -1,3 +1,3 @@
-## First Node API
+## Amadeus API integration
 
-My first node API written in Express js alongside mongodb
+Integrating to Amadeus flight API's
